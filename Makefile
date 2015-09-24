@@ -8,23 +8,22 @@ VPATH = $(srcdir)
 
 # DOSBOX CONFIGURATION
 dosbox = "C:\dev\assembly\tools\DOSBox-0.74\dosbox.exe"
-dosboxoptions = -exit -noconsole -noautoexec
+dosboxoptions = -noconsole
 dosboxmountcommands = -c "mount C: \"C:\dev\assembly\workspace\\""
 dosboxsetupcommands = -c "set PATH=Z:\;C:\Tasm\;"
-dosboxinitcommands  = -c "C:" -c "cd C:\life"
+dosboxinitcommands = -c "C:" -c \"cd C:\$$(dir)\"
 dosboxcommands = $(dosboxmountcommands) $(dosboxsetupcommands) $(dosboxinitcommands)
-dosboxconf = "C:\dev\assembly\tools\DOSBox-0.74\MyConf\tasmmounted.conf"
 
 # COMMANDS
-TASM = $(dosbox) $(dosboxoptions) -conf $(dosboxconf) $(dosboxcommands) -c "tasm
-TLINK = $(dosbox) $(dosboxoptions) -conf $(dosboxconf) $(dosboxcommands) -c "tlink
-TRUN = $(dosbox) $(dosboxoptions) -conf $(dosboxconf) $(dosboxcommands) -c
+TASM = $(dosbox) $(dosboxoptions) $(dosboxcommands) -c "tasm
+TLINK = $(dosbox) $(dosboxoptions) $(dosboxcommands) -c "tlink
+TRUN = $(dosbox) $(dosboxoptions) $(dosboxcommands) -c
 OBJS = obj\life.obj obj\framer.obj obj\utils.obj
 
 # Targets
 bin\life.exe: $(OBJS) | bin
 	$(TLINK) ${objdir}\life.obj+${objdir}\framer.obj+${objdir}\utils.obj, $@"
-	$(TRUN) "bin\life.exe"
+	$(TRUN) \"${bindir}\life.exe\"
 
 obj\life.obj: life.asm | obj
 	$(TASM) $(srcdir)\life.asm, $(objdir)" #-c exit
